@@ -2,6 +2,8 @@ using gRPC.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSingleton<GreeterService>();
+
 // Add services to the container.
 builder.Services.AddGrpc();
 

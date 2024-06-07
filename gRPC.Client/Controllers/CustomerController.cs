@@ -1,6 +1,6 @@
-using gRPC.Client;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
+using gRPC.Protos;
 
 namespace gRPC.Client.Controllers
 {

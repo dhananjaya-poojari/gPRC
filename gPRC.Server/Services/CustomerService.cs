@@ -3,14 +3,14 @@ using gRPC.Protos;
 
 namespace gRPC.Server.Services
 {
-    public class GreeterService : CustomerService.CustomerServiceBase
+    public class CustomerService : Protos.CustomerService.CustomerServiceBase
     {
-        List<Customer> _customers = new();
+        List<Customer> _customers = [];
 
-        public GreeterService()
+        public CustomerService()
         {
-            _customers = new List<Customer>
-                    {
+            _customers =
+                    [
                         new Customer
                             {
                 Id = "12345678",
@@ -32,7 +32,7 @@ namespace gRPC.Server.Services
         Address = "9101 Maple Avenue, Springfield, IL 62704, USA",
         Age = 40
     }
-                };
+                ];
         }
 
         public override Task<Customer> Get(CustomerRequestId request, ServerCallContext context)

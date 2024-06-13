@@ -30,4 +30,5 @@ powershell
 ```
 .\grpcui.exe localhost:7065
 ```
-4. Interact with gRPC UI
+### 4. Interact with gRPC UI
+![image](https://github.com/dhananjaya-poojari/gPRC/assets/77887564/ec3cf32b-4195-4d92-ad1d-c0272816ca83)

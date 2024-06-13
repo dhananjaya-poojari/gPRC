@@ -11,10 +11,9 @@ namespace gRPC.Client.Controllers
 
         private readonly CustomerService.CustomerServiceClient _client;
 
-        public CustomerController()
+        public CustomerController(CustomerService.CustomerServiceClient client)
         {
-            var channel = GrpcChannel.ForAddress("https://localhost:7065");
-            _client = new CustomerService.CustomerServiceClient(channel);
+            _client = client;
         }
 
         [HttpGet("all")]

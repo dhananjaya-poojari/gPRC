@@ -1,0 +1,22 @@
+﻿syntax= "proto3";
+
+option csharp_namespace = "gRPC.Protos";
+
+package greet;
+
+message Greeting {
+	string id = 1;
+	string name = 2;
+}
+
+message GreetManyTimesRequest {
+	Greeting greeting = 1;
+}
+
+message GreetManyTimeResponse {
+	string result = 1;
+}
+
+service GreetingService {
+	rpc GreetManyTimes (GreetManyTimesRequest) returns (stream GreetManyTimeResponse) {}
+}

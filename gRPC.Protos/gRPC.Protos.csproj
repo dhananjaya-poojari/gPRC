@@ -18,5 +18,8 @@
 	<ItemGroup>
 		<Protobuf Include="Protos\*.proto" OutputDir="%(RelativePath)Generated" />
 	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="protos\calculator.proto" />
+	</ItemGroup>
 
 </Project>

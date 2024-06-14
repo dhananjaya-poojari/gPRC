@@ -45,5 +45,21 @@ namespace gRPC.Client.Controllers
 
             return output;
         }
+
+        [HttpPost]
+        public async Task<string> Send([FromBody] List<Greeting> greetings)
+        {
+            var stream = _client.LongGreet();
+            foreach (Greeting greet in greetings)
+            {
+                var request = new LongGreetRequest { Greeting = greet };
+                await stream.RequestStream.WriteAsync(request);
+            }
+            await stream.RequestStream.CompleteAsync();
+
+            var response = await stream.ResponseAsync;
+
+            return response.Result;
+        }
     }
 }

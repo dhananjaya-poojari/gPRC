@@ -11,7 +11,16 @@ namespace gRPC.Server.Services
             foreach (int i in Enumerable.Range(1, 10))
             {
                 await responseStream.WriteAsync(new GreetManyTimeResponse() { Result = result });
-            }            
+            }
+        }
+        public override async Task<LongGreetResponse> LongGreet(IAsyncStreamReader<LongGreetRequest> requestStream, ServerCallContext context)
+        {
+            string result = "";
+            while (await requestStream.MoveNext())
+            {
+                result += string.Format("Hello {0} {1} {2}", requestStream.Current.Greeting.Name, requestStream.Current.Greeting.Id, Environment.NewLine);
+            }
+            return new LongGreetResponse() { Result = result };
         }
     }
 }

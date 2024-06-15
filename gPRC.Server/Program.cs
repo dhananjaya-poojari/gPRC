@@ -1,7 +1,6 @@
 using gRPC.Server.Data;
 using gRPC.Server.Services;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +25,7 @@ app.MapGrpcReflectionService();
 app.MapGrpcService<CustomerServiceImplementation>();
 app.MapGrpcService<GreeterServiceImplementation>();
 app.MapGrpcService<CalculatorServiceImplementation>();
+app.MapGrpcService<SqrtServiceImplementation>();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
 ApplyMigration();

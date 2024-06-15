@@ -31,4 +31,7 @@ service GreetingService {
 	
 	// Client Streaming
 	rpc LongGreet (stream LongGreetRequest) returns (LongGreetResponse){}
+
+	//Bi Directional Streaming
+	rpc GreetEveryone (stream LongGreetRequest) returns (stream GreetManyTimeResponse) {}
 }

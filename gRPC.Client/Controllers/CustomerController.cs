@@ -1,6 +1,6 @@
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
 using gRPC.Protos;
+using Grpc.Core;
 
 namespace gRPC.Client.Controllers
 {
@@ -19,7 +19,14 @@ namespace gRPC.Client.Controllers
         [HttpGet("all")]
         public CustomerList GetAll()
         {
-            return _client.GetAll(new Empty() { });
+            try
+            {
+                return _client.GetAll(new Empty() { }, deadline: DateTime.UtcNow.AddMilliseconds(100));
+            }
+            catch (RpcException e) when (e.StatusCode == Grpc.Core.StatusCode.DeadlineExceeded)
+            {
+                throw new Exception("Error" + e.Status.StatusCode);
+            }
         }
 
         [HttpGet("{id:int}")]

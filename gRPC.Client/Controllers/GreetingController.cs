@@ -1,6 +1,4 @@
-﻿using Grpc.Net.Client;
-using gRPC.Protos;
-using Microsoft.AspNetCore.Http;
+﻿using gRPC.Protos;
 using Microsoft.AspNetCore.Mvc;
 using Grpc.Core;
 
@@ -60,6 +58,28 @@ namespace gRPC.Client.Controllers
             var response = await stream.ResponseAsync;
 
             return response.Result;
+        }
+
+        [HttpPost("bidi")]
+        public async Task<string> SendAndRecieve([FromBody] List<Greeting> greetings)
+        {
+            var stream = _client.GreetEveryone();
+            var result = string.Empty;
+            var responseReaderTask = Task.Run(async () =>
+            {
+                while (await stream.ResponseStream.MoveNext())
+                {
+                    result += stream.ResponseStream.Current.Result;
+                }
+            });
+            foreach (Greeting greet in greetings)
+            {
+                var request = new LongGreetRequest { Greeting = greet };
+                await stream.RequestStream.WriteAsync(request);
+            }
+            await stream.RequestStream.CompleteAsync();
+            responseReaderTask.Wait();
+            return result;
         }
     }
 }

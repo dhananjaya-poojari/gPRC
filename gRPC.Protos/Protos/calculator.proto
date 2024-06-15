@@ -8,13 +8,24 @@ message Number {
 	int32 num = 1;
 }
 
+message NumberArray {
+	repeated Number arr = 1;
+}
+
 message ManyTimeResponse {
 	string result = 1;
 }
 
 service CalculatorService {
+	// Unary
+	rpc Sum (NumberArray) returns (ManyTimeResponse){}
+
+	// Server streaming
 	rpc PrimeNumber (Number) returns (stream ManyTimeResponse){}
 
 	// Client streaming
-	rpc ComputeAverage(stream Number) returns (Number){}
+	rpc ComputeAverage(stream Number) returns (ManyTimeResponse){}
+
+	// Bidirectional streaming
+	rpc ComputeMaximum(stream Number) returns (stream ManyTimeResponse){}
 }

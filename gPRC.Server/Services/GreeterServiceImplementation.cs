@@ -22,5 +22,13 @@ namespace gRPC.Server.Services
             }
             return new LongGreetResponse() { Result = result };
         }
+        public override async Task GreetEveryone(IAsyncStreamReader<LongGreetRequest> requestStream, IServerStreamWriter<GreetManyTimeResponse> responseStream, ServerCallContext context)
+        {
+            while (await requestStream.MoveNext())
+            {
+                var result = String.Format("Hello {0} {1} {2}", requestStream.Current.Greeting.Name, requestStream.Current.Greeting.Id, Environment.NewLine);
+                await responseStream.WriteAsync(new GreetManyTimeResponse { Result = result });
+            }
+        }
     }
 }

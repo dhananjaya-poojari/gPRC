@@ -1,0 +1,37 @@
+﻿syntax= "proto3";
+
+option csharp_namespace = "gRPC.Protos";
+
+package greet;
+
+message Greeting {
+	string id = 1;
+	string name = 2;
+}
+
+message GreetManyTimesRequest {
+	Greeting greeting = 1;
+}
+
+message GreetManyTimeResponse {
+	string result = 1;
+}
+
+message LongGreetRequest {
+	Greeting greeting = 1;
+}
+
+message LongGreetResponse {
+	string result = 1;
+}
+
+service GreetingService {
+	//Server Streaming
+	rpc GreetManyTimes (GreetManyTimesRequest) returns (stream GreetManyTimeResponse) {}
+	
+	// Client Streaming
+	rpc LongGreet (stream LongGreetRequest) returns (LongGreetResponse){}
+
+	//Bi Directional Streaming
+	rpc GreetEveryone (stream LongGreetRequest) returns (stream GreetManyTimeResponse) {}
+}

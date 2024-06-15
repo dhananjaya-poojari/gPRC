@@ -1,6 +1,6 @@
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
 using gRPC.Protos;
+using Grpc.Core;
 
 namespace gRPC.Client.Controllers
 {
@@ -11,16 +11,22 @@ namespace gRPC.Client.Controllers
 
         private readonly CustomerService.CustomerServiceClient _client;
 
-        public CustomerController()
+        public CustomerController(CustomerService.CustomerServiceClient client)
         {
-            var channel = GrpcChannel.ForAddress("https://localhost:7065");
-            _client = new CustomerService.CustomerServiceClient(channel);
+            _client = client;
         }
 
         [HttpGet("all")]
         public CustomerList GetAll()
         {
-            return _client.GetAll(new Empty() { });
+            try
+            {
+                return _client.GetAll(new Empty() { }, deadline: DateTime.UtcNow.AddMilliseconds(100));
+            }
+            catch (RpcException e) when (e.StatusCode == Grpc.Core.StatusCode.DeadlineExceeded)
+            {
+                throw new Exception("Error" + e.Status.StatusCode);
+            }
         }
 
         [HttpGet("{id:int}")]
